@@ -1,0 +1,38 @@
+# Project: IA
+# Makefile created by Red Panda C++ 3.4.3279
+
+CXX      = "g++.exe"
+CC       = "gcc.exe"
+WINDRES  = "windres.exe"
+RM       = del /q /f
+CD       = cd /d
+LIBS     = "-Wl,--stack,12582912"
+INCS     = 
+CXXINCS  = 
+CXXFLAGS = $(CXXINCS) "-g3" "-fno-ms-extensions" "-pipe" "-Wall" "-Werror=return-type" "-Werror=vla" "-D_DEBUG"
+CFLAGS   = $(INCS) "-g3" "-fno-ms-extensions" "-pipe" "-Wall" "-Werror=implicit-int" "-Werror=return-type" "-Werror=vla" "-D_DEBUG"
+NASM_FLAGS   =  "-f" "elf64" "-g"
+WINDRESFLAGS = 
+RES      = IA_private.res
+OBJ      = main.o $(RES)
+BIN      = IA.exe
+LINKOBJ  = "main.o" "IA_private.res"
+CLEANOBJ = "main.o" "IA_private.res" "IA.exe"
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	-$(RM) $(CLEANOBJ) >NUL 2>&1
+
+IA.exe: $(OBJ)
+
+	$(CC) $(LINKOBJ) -o "IA.exe" $(LIBS)
+
+main.o: main.c
+	$(CC) -c "main.c" -o "main.o" $(CFLAGS)  -finput-charset=UTF-8 -fexec-charset=windows-1252
+
+IA_private.res: IA_private.rc 
+	$(WINDRES) -i "IA_private.rc" --input-format=rc -o "IA_private.res" -O coff $(WINDRESFLAGS) 
+
